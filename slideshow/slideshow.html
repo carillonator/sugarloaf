@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- This is the July 21 version, corrected for multiple keypresses  -->
+
+<html>
+<head>
+	<title>Sugarloaf Slideshow</title>
+	
+	<style type="text/css">
+	
+		html, body {
+			background-color: #000;			
+			margin: 0;
+			padding: 0;
+		}
+		
+		img {
+			position: absolute;			
+		}
+		
+		#preloader {
+			width: 30px;
+			left: 50%;			
+			z-index: -1;
+		}
+		
+		#imageB {
+			display: none;
+		}
+		
+		#counter {
+			position: absolute;
+			height: 1em !important;
+			left: 10px;
+			bottom: 10px;
+			color: #555;
+			z-index: 500;
+			font-family: monospace;
+			display: none;
+		}
+			
+	</style>
+	
+	<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+	<script type="text/javascript">
+	
+		$(function() {
+		
+			var w = $(window).width(); // get window dimensions
+			var h = $(window).height();			
+			$('img').css({'maxWidth': w, 'maxHeight': h }); // limit image to size of window	
+						
+			$(window).resize(function() { // any time window changes size
+				w = $(window).width();
+				h = $(window).height();	
+				$('img').css({'maxWidth': w, 'maxHeight': h });
+				active.css('marginLeft',(w-inactive.width())/2);
+			});			
+
+			var regex = /(.+)\-(\d+).jpg$/; // regex for finding photo #
+			
+			var active = $('#imageA'); // lookup image tags only once			
+			var inactive = $('#imageB');
+			var preloader = $('#preloader');
+			var m = (w-active.width())/2;
+			active.css('marginLeft',m); // center initial image
+			
+			$(document).keypress(function(e) { // listen for keypresses
+				
+				// console.log( e.which );
+				
+				if (e.which >= 48 && e.which <= 57 ) { // only respond to number keys
+				
+					if ( active.is(':animated') ) { // if a fade is already in progress
+						// console.log('keypress canceled');
+					} else { // if no fade is in progress, fade!
+					
+						var time = .3 * 1000 * (parseInt(e.which) - 48); // mutiplier for fade time
+					
+						inactive.css('marginLeft',(w-inactive.width())/2); // center hidden image
+					
+						active.fadeOut(time, function(){ // fade out active, then...
+							var path = $(this).attr('src');
+							var newno = parseInt(path.replace(regex,"$2")) + 2; // get the second-next image
+							var newpath = 'photos/show-' + newno + '.jpg'; 
+							preloader.attr('src',newpath); // set the preloader to the new img
+							$(this).attr('src',newpath); // set the new image
+							$('#counter').html(newno-1);
+							// console.log(newno-1);								
+						});
+						inactive.fadeIn(time); // fade in new image
+										
+						var oldactive = active; // swap [in]active
+						active = inactive;
+						inactive = oldactive;
+					
+					}
+								
+				} else if ( e.which == 98 ) { // b is pressed
+					
+					if ( active.is(':animated') ) { // if a fade is already in progress
+						// console.log('keypress canceled');
+					} else { // if no fade is in progress, back up!
+						
+						var path = active.attr('src');
+						var newno = parseInt(path.replace(regex,"$2")) - 1;
+					
+						if ( newno >= 1 ) {
+							var newpath = 'photos/show-' + newno + '.jpg';
+							preloader.attr('src',path); // preloader to the active image
+							inactive.attr('src',newpath);
+							$('#counter').html(newno);
+						
+							inactive.css('marginLeft',(w-inactive.width())/2);
+							active.hide();
+							inactive.show();					
+						
+							var oldinactive = inactive; 
+							inactive = active;
+							active = oldinactive;	
+						}
+					
+					}				
+					
+				} else if ( e.which == 99 ) {
+				
+					$('#counter').toggle();	
+				
+				}
+			});					
+		});
+	
+	</script>
+
+</head>
+<body>
+
+<img id="imageA" alt="image A" src="photos/show-1.jpg" />
+<img id="imageB" alt="image B" src="photos/show-2.jpg" />
+<img id="preloader" alt="" src="photos/show-2.jpg" />
+<div id="counter">1</div>
+
+</body>
+</html>

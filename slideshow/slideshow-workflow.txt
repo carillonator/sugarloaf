@@ -1,0 +1,88 @@
+COMPUTER & NETWORK SETUP
+
+Computers all have user name sugarloaf, password sugarloaf ("Sugar Loaf" is just the long version of the user name and can be used interchangeably with "sugarloaf").
+
+Computers are all networked together through the switch. Some of the cables pull out easily, so if a computer is not on the network, check its ethernet cable at both ends. They have IPs 10.0.0.10 through 10.0.0.15 starting from the left, but you shouldn't need to use IPs for anything. Network names are set to students' names: Go to System Preferences > Sharing to set network names (box at the top). You may have to click the lock at the bottom left and type in the password to make changes. 
+
+In System Prefs > Sharing, File Sharing and Screen Sharing should be checked. With this turned on, when you go to the Finder on any computer, the left column will show the names of all the other computers. Click one of the names, and you will probably see the *public* folders (not useful). Click Connect As... to see everything, including the home folder, which is "sugarloaf" on all machines. 
+
+Click on Share Screen... to control/remote desktop that computer. We did this all the time and the kids were fine with it. 
+
+I used my own Macbook as the master slideshow computer, which was always hooked up to the projector. Usually, someone would Screen Share to it from their own machine when we ran through the master slideshow catalog. This computer is called "slideshow" on the network. 
+
+wireless password is 9162282485 -- some of the computers may be remembering this. Many sites are blocked--if you need to get around this, let me know and I'll send instructions. We used youtube a lot to preview songs, for example.  
+
+
+
+IMPORTING PHOTOS 
+
+I had them manually copy all image files over from the camera to a folder with their name on the Desktop, using a different subfolder (e.g. Monday AM) for each import, then import using "Add" in Lightroom (i.e. don't copy). If the camera is plugged in, LR will go to the camera card first as the import source. Of course some of them didn't notice this and imported from the camera, but LR is smart enough to know that the images are on an external drive, and will default to "Copy" mode. In this case, photos are copied to /Users/sugarloaf/Pictures/ by default. 
+
+After confirming that the images were copied, I had them delete the image files from their card using the Finder. *IMPORTANT*: deleting image files from a card actually moves them to the trash ON THE CARD, so you have to empty the trash after deleting BEFORE ejecting the card, else the card capacity will be reduced even though nothing is on it. 
+
+
+
+SORTING & RATING
+
+After each import, I had them rate and categorize each image:
+
+1 star: trash
+2 stars: keep for themselves, but not slideshow material
+3 stars: needs work
+4 stars: slide show possible
+5 stars: slide show definitely
+
+you can also flag photos as Picks or Rejected, or colors, but we didn't use this much. 
+
+They created a collection for each class/activity, etc. and dragged all photos into them. They also created Smart Collections for each star rating. Make sure everyone names their categories with exactly the same spelling (see below).
+
+In the early stages, we would Screen Share from the projector laptop to the students' imacs so they could easily share their [4- and 5-star] photos with the class on the wall. 
+
+
+
+TRANSFERRING TO MASTER CATALOG
+
+When it came time to start combining photos into the master Catalog, I had them  ⌘-click their 4- and 5-star Smart Collections, then do File > Export as Catalog.... Make sure "Export negative files" is CHECKED--it will put originals in a folder next to the exported catalog. Note the number of images to be exported. I had them save the export to the Desktop, named something like "Justin Monday PM"
+
+Then move to the master computer, either by sitting in front of it or Screen Sharing (which they preferred). Open the master catalog and select File > Import from Catalog.... Their computer should appear as a file share in the left column of that dialog box. Click it, navigate to the Desktop, and select the just-exported catalog file (.lrcat).
+
+The dialog that then appears checks for duplicates and gives options on what to copy and override. New Photos shows how many non-duplicates are to be imported. *IMPORTANT*: Select File Handling: "Copy new photos to a new location and import," which will copy the originals over the network to the master computer. 
+
+Changed Existing Photos should be 0, since it's *IMPORTANT* to not make any changes to the photos on the original computer once they've been imported into the master---this is not a great system, but otherwise there could be two versions in two places. If there are Changed Existing Photos, be sure to select Replace: Nothing, so that changes are not made to the master (e.g. so that photos that have been marked one star in the master will not re-appear as 4-star when that student's catalog is imported aagin). It seems to be easier to just export and import the whole  catalog every time since LR is good about detecting dupes and will not re-copy them. 
+
+Photos imported to the master will retain their collections and star ratings from the original. If everyone names their collections the same, new photos will just be added to the existing collection of that name. 
+
+
+
+EXPORTING FROM LIGHTROOM TO THE SLIDESHOW
+
+After assembling the slideshow in one collection, click on it and select File > Export.... 
+
+Export to subfolder "photos"
+
+Rename to "Custom Name - Sequence"
+Custom Text: "show"
+Start No: 1
+
+JPEG quality 90
+
+Resize "Long Edge" to 1800px
+Check "Don't Enlarge"
+Resolution 150ppi (though 72 should be fine)
+
+Save this as an Export preset
+
+
+
+PLAYING THE SLIDESHOW
+
+In the 'performance' folder on the laptop, open the file 'slideshow.html' in Opera. Opera is a web browser; it does a much better job of dissolving images than other browsers and has a fullscreen mode. slideshow.html looks for a 'photos' folder in the same location it is in, and starts with show-1.jpg in that folder and continues. Press number keys 0-9 for different fade durations (0 is instant). 'b' goes backward. 'c' toggles a counter in the lower left. jquery-1.4.2.min.js must be there too. 
+
+At the campfire, we put the projector and the laptop on a table near the front. Instead of sitting there with the laptop display on, though, we ran a network cable to the back, where an iMac Screen Shared to it to control the show. Another iMac there ran the DJay software, plugged into the Tape input on the sound mixer. I made a 40' network cable for this (got 100ft bulk at Home Depot for $20 so we can make more; two of them there are mine). 
+
+
+AUDIO
+
+We used DJay, the installer for which is on every desktop. It's a 15-day demo that quits after 30 mins of being open (we think). It draws from iTunes.
+
+iRip pulls tracks off of an iPod, which is not otherwise possible. These demos are limited to 100 tracks, but you should have plenty or all left on most of the computers. 
