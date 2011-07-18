@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<!-- This is the July 21 version, corrected for multiple keypresses  -->
 
 <html>
 <head>
@@ -16,6 +15,13 @@
 		
 		img {
 			position: absolute;			
+		}
+		
+		video {
+			z-index: 1000;
+			position: absolute;
+			top: 0;
+			left: -80px;
 		}
 		
 		#preloader {
@@ -34,27 +40,28 @@
 			left: 10px;
 			bottom: 10px;
 			color: #555;
-			z-index: 500;
+			z-index: 9999;
 			font-family: monospace;
 			display: none;
 		}
 			
 	</style>
 	
-	<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="jquery-1.6.2.min.js"></script>
 	<script type="text/javascript">
 	
 		$(function() {
 		
 			var w = $(window).width(); // get window dimensions
 			var h = $(window).height();			
-			$('img').css({'maxWidth': w, 'maxHeight': h }); // limit image to size of window	
+			$('img').css({'maxWidth': w, 'maxHeight': h }); // limit images to size of window	
+			$('video').css({'height': h }); // set size of videos
 						
 			$(window).resize(function() { // any time window changes size
 				w = $(window).width();
 				h = $(window).height();	
-				$('img').css({'maxWidth': w, 'maxHeight': h });
-				active.css('marginLeft',(w-inactive.width())/2);
+				$('img').css({'maxWidth': w, 'maxHeight': h }); // reset the max img size
+				active.css('marginLeft',(w-inactive.width())/2); // center the active image
 			});			
 
 			var regex = /(.+)\-(\d+).jpg$/; // regex for finding photo #
@@ -62,44 +69,70 @@
 			var active = $('#imageA'); // lookup image tags only once			
 			var inactive = $('#imageB');
 			var preloader = $('#preloader');
-			var m = (w-active.width())/2;
+			var video = $('#videoclip');
+			var jsvideo = document.getElementById('videoclip');
+			var m = (w-active.width())/2; // side margin size
 			active.css('marginLeft',m); // center initial image
+			//var n = (w-960)/4; // video side margin size
+			//video.css('marginLeft',n).css('height',h); // set video margin and height
+			
+			video.bind()
 			
 			$(document).keypress(function(e) { // listen for keypresses
 				
 				// console.log( e.which );
 				
-				if (e.which >= 48 && e.which <= 57 ) { // only respond to number keys
+				if (e.which >= 48 && e.which <= 57 ) { // handle number keys
 				
 					if ( active.is(':animated') ) { // if a fade is already in progress
-						// console.log('keypress canceled');
+						// do nothing
 					} else { // if no fade is in progress, fade!
-					
-						var time = .3 * 1000 * (parseInt(e.which) - 48); // mutiplier for fade time
-					
+												
+						var time = .3 * 1000 * (parseInt(e.which) - 48); // mutiplier for fade time based on number pressed
+						var path = active.attr('src');
+						var newno = parseInt(path.replace(regex,"$2")) + 2; // get the second-next image
+						var newpath = 'photos/show-' + newno + '.jpg';
+						var videopath = 'photos/show-' + (newno-2) + '.webm';	
+							
 						inactive.css('marginLeft',(w-inactive.width())/2); // center hidden image
 					
+						if ( jsvideo.ended ) {
+							video.fadeOut(time); // fade out a previous video if one is still up
+						}
+						
 						active.fadeOut(time, function(){ // fade out active, then...
-							var path = $(this).attr('src');
-							var newno = parseInt(path.replace(regex,"$2")) + 2; // get the second-next image
-							var newpath = 'photos/show-' + newno + '.jpg'; 
 							preloader.attr('src',newpath); // set the preloader to the new img
 							$(this).attr('src',newpath); // set the new image
-							$('#counter').html(newno-1);
-							// console.log(newno-1);								
+							$('#counter').html(newno-1);								
 						});
 						inactive.fadeIn(time); // fade in new image
-										
+						
+						$.ajax({ // check if a video with the present number exists
+							url: videopath,
+							type:'HEAD',
+							error: // if there is no video file
+								function(){ 
+									// do nothing
+								},
+							success: // if there is a video file
+								function(){								
+									video.attr('src',videopath).show();
+									active.hide();
+									//inactive.hide();
+								}
+						});
+						
+						//video.fadeOut(time); // fade out the video if it's there
 						var oldactive = active; // swap [in]active
 						active = inactive;
 						inactive = oldactive;
 					
 					}
 								
-				} else if ( e.which == 98 ) { // b is pressed
+				} else if ( e.which == 98 ) { // if b is pressed
 					
 					if ( active.is(':animated') ) { // if a fade is already in progress
-						// console.log('keypress canceled');
+						// do nothing
 					} else { // if no fade is in progress, back up!
 						
 						var path = active.attr('src');
@@ -107,7 +140,7 @@
 					
 						if ( newno >= 1 ) {
 							var newpath = 'photos/show-' + newno + '.jpg';
-							preloader.attr('src',path); // preloader to the active image
+							preloader.attr('src',path); // set preloader to the active image
 							inactive.attr('src',newpath);
 							$('#counter').html(newno);
 						
@@ -122,9 +155,9 @@
 					
 					}				
 					
-				} else if ( e.which == 99 ) {
+				} else if ( e.which == 99 ) { // if c is pressed
 				
-					$('#counter').toggle();	
+					$('#counter').toggle();
 				
 				}
 			});					
@@ -138,6 +171,7 @@
 <img id="imageA" alt="image A" src="photos/show-1.jpg" />
 <img id="imageB" alt="image B" src="photos/show-2.jpg" />
 <img id="preloader" alt="" src="photos/show-2.jpg" />
+<video id="videoclip" src="" preload="auto" autoplay="true">
 <div id="counter">1</div>
 
 </body>
