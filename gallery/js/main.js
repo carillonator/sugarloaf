@@ -4,6 +4,7 @@ function load_meter() {
 	var pct = Math.round(loaded_thumbs/thumb_count*100);
 	var string = 'Loading  &nbsp;' + pct + '%';
 	$('#loading_page').html(string);
+	console.log(string)
 }
 
 $(window).load(function() {
