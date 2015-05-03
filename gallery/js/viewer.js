@@ -10,6 +10,7 @@ jQuery.setName = function(next) {
 $(function() {
 	
 	var active;
+	var active1;
 	
 	$('.grid img').click(function() {
 	
